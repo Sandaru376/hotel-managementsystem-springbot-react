@@ -28,44 +28,71 @@ const ProfilePage = () => {
   return (
     <div className="profile-page">
       {user && (
-        <h2>Welcome back, <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>{user.name}</em></h2>
+        <h2>
+          👋 Welcome back,{' '}
+          <em style={{ fontStyle: 'italic', color: 'var(--primary)' }}>{user.name}</em>
+        </h2>
       )}
       {error && <p className="error-message">{error}</p>}
 
       <div className="profile-actions">
-        <button onClick={() => navigate('/edit-profile')}>Edit Profile</button>
-        <button onClick={handleLogout}>Sign Out</button>
+        <button onClick={() => navigate('/edit-profile')}>✏️ Edit Profile</button>
+        <button onClick={handleLogout}>🚪 Sign Out</button>
       </div>
 
       {user && (
         <>
+          {/* Profile Details Card */}
           <div className="profile-details">
-            <h3>Profile Details</h3>
+            <h3>👤 Profile Details</h3>
             <p><strong>Name</strong> {user.name}</p>
             <p><strong>Email</strong> {user.email}</p>
             <p><strong>Phone</strong> {user.phoneNumber}</p>
           </div>
 
+          {/* Bookings */}
           <div className="bookings-section">
-            <h3>Booking History</h3>
+            <h3>📋 Booking History</h3>
             <div className="booking-list">
               {user.bookings && user.bookings.length > 0 ? (
                 user.bookings.map((booking) => (
                   <div key={booking.id} className="booking-item">
-                    <p><strong>Confirmation Code</strong> {booking.bookingConfirmationCode}</p>
+                    <p>
+                      <strong>Confirmation Code</strong>
+                      <span style={{ color: 'var(--primary)', fontWeight: 700 }}>
+                        {booking.bookingConfirmationCode}
+                      </span>
+                    </p>
                     <p><strong>Check-in</strong> {booking.checkInDate}</p>
                     <p><strong>Check-out</strong> {booking.checkOutDate}</p>
                     <p><strong>Total Guests</strong> {booking.totalNumOfGuest}</p>
                     <p><strong>Room Type</strong> {booking.room?.roomType}</p>
                     {booking.room?.roomPhotoUrl && (
-                      <img src={booking.room.roomPhotoUrl} alt="Room" className="room-photo" />
+                      <img
+                        src={booking.room.roomPhotoUrl}
+                        alt="Room"
+                        className="room-photo"
+                      />
                     )}
                   </div>
                 ))
               ) : (
-                <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
-                  No bookings found. <a href="/rooms" style={{ color: 'var(--gold)' }}>Browse rooms →</a>
-                </p>
+                <div style={{
+                  background: 'var(--bg-soft)', border: '1.5px dashed var(--border)',
+                  borderRadius: 'var(--radius)', padding: '32px', textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: 36, marginBottom: 12 }}>🛏️</div>
+                  <p style={{ color: 'var(--text-muted)', fontSize: 15, marginBottom: 16 }}>
+                    You haven't made any bookings yet.
+                  </p>
+                  <a href="/rooms" style={{
+                    display: 'inline-block', background: 'var(--primary)',
+                    color: '#fff', padding: '10px 24px', borderRadius: 'var(--radius-sm)',
+                    fontSize: 14, fontWeight: 600
+                  }}>
+                    Browse Rooms →
+                  </a>
+                </div>
               )}
             </div>
           </div>

@@ -2,7 +2,9 @@ const FooterComponent = () => {
   return (
     <footer>
       <p className="my-footer">
-        <span>PHEGON HOTEL</span> · All Rights Reserved © {new Date().getFullYear()}
+        <span>Hotel</span>
+        &nbsp;·&nbsp; All Rights Reserved © {new Date().getFullYear()}
+        &nbsp;·&nbsp; Luxury stays, unforgettable memories
       </p>
     </footer>
   );

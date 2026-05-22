@@ -22,13 +22,11 @@ const EditBookingPage = () => {
   }, [bookingCode]);
 
   const archiveBooking = async (bookingId) => {
-    if (!window.confirm('Are you sure you want to archive this booking?')) {
-      return;
-    }
+    if (!window.confirm('Archive this booking? The guest will be notified.')) return;
     try {
       const response = await ApiService.cancelBooking(bookingId);
       if (response.statusCode === 200) {
-        setSuccess('The booking was successfully archived.');
+        setSuccess('✅ Booking archived successfully.');
         setTimeout(() => {
           setSuccess('');
           navigate('/admin/manage-bookings');
@@ -42,45 +40,51 @@ const EditBookingPage = () => {
 
   return (
     <div className="find-booking-page">
+      <span className="section-label">Admin Panel</span>
       <h2>Booking Detail</h2>
-      {error && <p className='error-message'>{error}</p>}
-      {success && <p className='success-message'>{success}</p>}
+
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
+
       {bookingDetails && (
         <div className="booking-details">
-          <h3>Booking Details</h3>
-          <p>Confirmation Code: {bookingDetails.bookingConfirmationCode}</p>
-          <p>Check-in Date: {bookingDetails.checkInDate}</p>
-          <p>Check-out Date: {bookingDetails.checkOutDate}</p>
-          <p>Num Of Adults: {bookingDetails.numOfAdults}</p>
-          <p>Num Of Children: {bookingDetails.numOfChildren}</p>
-          <p>Guest Email: {bookingDetails.guestEmail}</p>
+          <h3>📋 Booking Info</h3>
+          <p><strong>Confirmation Code:</strong> {bookingDetails.bookingConfirmationCode}</p>
+          <p><strong>Check-in:</strong> {bookingDetails.checkInDate}</p>
+          <p><strong>Check-out:</strong> {bookingDetails.checkOutDate}</p>
+          <p><strong>Adults:</strong> {bookingDetails.numOfAdults}</p>
+          <p><strong>Children:</strong> {bookingDetails.numOfChildren}</p>
 
-          <br /><hr /><br />
-          <h3>Booker Details</h3>
+          <div style={{ height: 1, background: 'var(--border)', margin: '20px 0' }}></div>
+          <h3>👤 Guest Info</h3>
           {bookingDetails.user && (
-            <div>
-              <p>Name: {bookingDetails.user.name}</p>
-              <p>Email: {bookingDetails.user.email}</p>
-              <p>Phone Number: {bookingDetails.user.phoneNumber}</p>
-            </div>
+            <>
+              <p><strong>Name:</strong> {bookingDetails.user.name}</p>
+              <p><strong>Email:</strong> {bookingDetails.user.email}</p>
+              <p><strong>Phone:</strong> {bookingDetails.user.phoneNumber}</p>
+            </>
           )}
 
-          <br /><hr /><br />
-          <h3>Room Details</h3>
+          <div style={{ height: 1, background: 'var(--border)', margin: '20px 0' }}></div>
+          <h3>🛏️ Room Info</h3>
           {bookingDetails.room && (
-            <div>
-              <p>Room Type: {bookingDetails.room.roomType}</p>
-              <p>Room Price: ${bookingDetails.room.roomPrice}</p>
-              <p>Room Description: {bookingDetails.room.roomDescription}</p>
-              <img src={bookingDetails.room.roomPhotoUrl} alt={bookingDetails.room.roomType} />
-            </div>
+            <>
+              <p><strong>Room Type:</strong> {bookingDetails.room.roomType}</p>
+              <p><strong>Price:</strong> ${bookingDetails.room.roomPrice} / night</p>
+              <p><strong>Description:</strong> {bookingDetails.room.roomDescription}</p>
+              <img
+                src={bookingDetails.room.roomPhotoUrl}
+                alt={bookingDetails.room.roomType}
+                style={{ borderRadius: 'var(--radius-sm)', marginTop: 12, maxHeight: 200, width: '100%', objectFit: 'cover' }}
+              />
+            </>
           )}
 
           <button
             className="acheive-booking"
             onClick={() => archiveBooking(bookingDetails.id)}
           >
-            Archive Booking
+            🗃️ Archive Booking
           </button>
         </div>
       )}

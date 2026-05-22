@@ -5,6 +5,7 @@ const FindBookingPage = () => {
   const [confirmationCode, setConfirmationCode] = useState('');
   const [bookingDetails, setBookingDetails] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
     if (!confirmationCode.trim()) {
@@ -12,6 +13,7 @@ const FindBookingPage = () => {
       setTimeout(() => setError(''), 5000);
       return;
     }
+    setLoading(true);
     try {
       const response = await ApiService.getBookingByConfirmationCode(confirmationCode);
       setBookingDetails(response.booking);
@@ -19,51 +21,69 @@ const FindBookingPage = () => {
     } catch (error) {
       setError(error.response?.data?.message || error.message);
       setTimeout(() => setError(''), 5000);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="find-booking-page">
-      <h2>Find Booking</h2>
+      <span className="section-label">Self Service</span>
+      <h2>Find My Booking</h2>
+      <p style={{ color: 'var(--text-muted)', marginBottom: 28, fontSize: 15 }}>
+        Enter your confirmation code to retrieve your booking details.
+      </p>
+
       <div className="search-container">
         <input
           required
           type="text"
-          placeholder="Enter your booking confirmation code"
+          placeholder="e.g. PHG-20241105-XXXX"
           value={confirmationCode}
           onChange={(e) => setConfirmationCode(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
-        <button onClick={handleSearch}>Find</button>
+        <button onClick={handleSearch} disabled={loading}>
+          {loading ? '🔍 Searching…' : '🔍 Find Booking'}
+        </button>
       </div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {error && <p className="error-message">{error}</p>}
+
       {bookingDetails && (
         <div className="booking-details">
-          <h3>Booking Details</h3>
-          <p>Confirmation Code: {bookingDetails.bookingConfirmationCode}</p>
-          <p>Check-in Date: {bookingDetails.checkInDate}</p>
-          <p>Check-out Date: {bookingDetails.checkOutDate}</p>
-          <p>Num Of Adults: {bookingDetails.numOfAdults}</p>
-          <p>Num Of Children: {bookingDetails.numOfChildren}</p>
+          {/* Booking summary */}
+          <h3>✅ Booking Found</h3>
+          <p><strong>Confirmation Code:</strong> {bookingDetails.bookingConfirmationCode}</p>
+          <p><strong>Check-in Date:</strong> {bookingDetails.checkInDate}</p>
+          <p><strong>Check-out Date:</strong> {bookingDetails.checkOutDate}</p>
+          <p><strong>Adults:</strong> {bookingDetails.numOfAdults}</p>
+          <p><strong>Children:</strong> {bookingDetails.numOfChildren}</p>
 
-          <br /><hr /><br />
-          <h3>Booker Details</h3>
+          {/* Divider */}
+          <div style={{ height: 1, background: 'var(--border)', margin: '20px 0' }}></div>
+          <h3>👤 Guest Details</h3>
           {bookingDetails.user ? (
-            <div>
-              <p>Name: {bookingDetails.user.name}</p>
-              <p>Email: {bookingDetails.user.email}</p>
-              <p>Phone Number: {bookingDetails.user.phoneNumber}</p>
-            </div>
+            <>
+              <p><strong>Name:</strong> {bookingDetails.user.name}</p>
+              <p><strong>Email:</strong> {bookingDetails.user.email}</p>
+              <p><strong>Phone:</strong> {bookingDetails.user.phoneNumber}</p>
+            </>
           ) : (
-            <p>Booker details not available.</p>
+            <p>Guest details not available.</p>
           )}
 
-          <br /><hr /><br />
-          <h3>Room Details</h3>
+          <div style={{ height: 1, background: 'var(--border)', margin: '20px 0' }}></div>
+          <h3>🛏️ Room Details</h3>
           {bookingDetails.room ? (
-            <div>
-              <p>Room Type: {bookingDetails.room.roomType}</p>
-              <img src={bookingDetails.room.roomPhotoUrl} alt={bookingDetails.room.roomType} />
-            </div>
+            <>
+              <p><strong>Room Type:</strong> {bookingDetails.room.roomType}</p>
+              <img
+                src={bookingDetails.room.roomPhotoUrl}
+                alt={bookingDetails.room.roomType}
+                style={{ borderRadius: 'var(--radius-sm)', marginTop: 12, maxHeight: 200, width: '100%', objectFit: 'cover' }}
+              />
+            </>
           ) : (
             <p>Room details not available.</p>
           )}

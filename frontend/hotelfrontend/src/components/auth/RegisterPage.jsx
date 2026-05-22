@@ -31,7 +31,7 @@ function RegisterPage() {
       const response = await ApiService.registerUser(formData);
       if (response.statusCode === 200) {
         setFormData({ name: '', email: '', password: '', phoneNumber: '' });
-        setSuccessMessage('Account created successfully. Redirecting to login…');
+        setSuccessMessage('✅ Account created! Redirecting to login…');
         setTimeout(() => { setSuccessMessage(''); navigate('/login'); }, 3000);
       }
     } catch (error) {
@@ -45,31 +45,56 @@ function RegisterPage() {
   return (
     <div className="auth-wrapper">
       <div className="auth-container">
+        <div style={{ textAlign: 'center', marginBottom: 8, fontSize: 36 }}>🌟</div>
         <h2>Create Account</h2>
+        <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 14, marginBottom: 28 }}>
+          Join Phegon Hotel for exclusive benefits
+        </p>
+
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Full Name</label>
-            <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="John Doe" required />
+            <label>👤 Full Name</label>
+            <input
+              type="text" name="name"
+              value={formData.name} onChange={handleInputChange}
+              placeholder="John Doe" required
+            />
           </div>
           <div className="form-group">
-            <label>Email Address</label>
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="your@email.com" required />
+            <label>📧 Email Address</label>
+            <input
+              type="email" name="email"
+              value={formData.email} onChange={handleInputChange}
+              placeholder="your@email.com" required
+            />
           </div>
           <div className="form-group">
-            <label>Phone Number</label>
-            <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} placeholder="+1 234 567 890" required />
+            <label>📱 Phone Number</label>
+            <input
+              type="text" name="phoneNumber"
+              value={formData.phoneNumber} onChange={handleInputChange}
+              placeholder="+1 234 567 890" required
+            />
           </div>
           <div className="form-group">
-            <label>Password</label>
-            <input type="password" name="password" value={formData.password} onChange={handleInputChange} placeholder="••••••••" required />
+            <label>🔒 Password</label>
+            <input
+              type="password" name="password"
+              value={formData.password} onChange={handleInputChange}
+              placeholder="Create a strong password" required
+            />
           </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Creating account…' : 'Create Account'}
+          <button type="submit" disabled={loading} style={{ marginTop: 8 }}>
+            {loading ? '⏳ Creating account…' : 'Create Account →'}
           </button>
         </form>
-        <p className="register-link" style={{ marginTop: 24 }}>
+
+        <div className="auth-divider"></div>
+
+        <p className="register-link">
           Already have an account? <a href="/login">Sign in</a>
         </p>
       </div>

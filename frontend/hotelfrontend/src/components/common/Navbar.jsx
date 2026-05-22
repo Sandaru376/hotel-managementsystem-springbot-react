@@ -19,32 +19,32 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <NavLink to="/home">PHEGON HOTEL</NavLink>
+        <NavLink to="/home">Hotel</NavLink>
       </div>
       <ul className="navbar-ul">
-        <li><NavLink to="/home" activeclassname="active">Home</NavLink></li>
-        <li><NavLink to="/rooms" activeclassname="active">Rooms</NavLink></li>
-        <li><NavLink to="/find-booking" activeclassname="active">Find Booking</NavLink></li>
+        <li><NavLink to="/home" className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink></li>
+        <li><NavLink to="/rooms" className={({ isActive }) => isActive ? 'active' : ''}>Rooms</NavLink></li>
+        <li><NavLink to="/find-booking" className={({ isActive }) => isActive ? 'active' : ''}>Find Booking</NavLink></li>
 
         {isUser && (
-          <li><NavLink to="/profile" activeclassname="active">Profile</NavLink></li>
+          <li><NavLink to="/profile" className={({ isActive }) => isActive ? 'active' : ''}>My Profile</NavLink></li>
         )}
         {isAdmin && (
-          <li><NavLink to="/admin" activeclassname="active">Admin</NavLink></li>
+          <li><NavLink to="/admin" className={({ isActive }) => isActive ? 'active' : ''}>Admin</NavLink></li>
         )}
 
         {!isAuthenticated && (
-          <li><NavLink to="/login" activeclassname="active">Login</NavLink></li>
+          <li><NavLink to="/login" className={({ isActive }) => isActive ? 'active' : ''}>Sign In</NavLink></li>
         )}
         {!isAuthenticated && (
           <li>
-            <NavLink to="/register" className="nav-cta" activeclassname="active">
+            <NavLink to="/register" className="nav-cta">
               Register
             </NavLink>
           </li>
         )}
         {isAuthenticated && (
-          <li className="logout-item" onClick={handleLogout}>Logout</li>
+          <li className="logout-item" onClick={handleLogout}>Sign Out</li>
         )}
       </ul>
     </nav>

@@ -37,11 +37,18 @@ function LoginPage() {
   return (
     <div className="auth-wrapper">
       <div className="auth-container">
+        {/* Top icon */}
+        <div style={{ textAlign: 'center', marginBottom: 8, fontSize: 36 }}>🏨</div>
         <h2>Welcome Back</h2>
+        <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 14, marginBottom: 28 }}>
+          Sign in to your Phegon Hotel account
+        </p>
+
         {error && <p className="error-message">{error}</p>}
+
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email Address</label>
+            <label>📧 Email Address</label>
             <input
               type="email"
               value={email}
@@ -51,21 +58,25 @@ function LoginPage() {
             />
           </div>
           <div className="form-group">
-            <label>Password</label>
+            <label>🔒 Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Enter your password"
               required
             />
           </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Signing in…' : 'Sign In'}
+          <button type="submit" disabled={loading} style={{ marginTop: 8 }}>
+            {loading ? '⏳ Signing in…' : 'Sign In →'}
           </button>
         </form>
-        <p className="register-link" style={{ marginTop: 24 }}>
-          Don't have an account? <a href="/register">Create one</a>
+
+        <div className="auth-divider"></div>
+
+        <p className="register-link">
+          Don't have an account?{' '}
+          <a href="/register">Create one for free</a>
         </p>
       </div>
     </div>
